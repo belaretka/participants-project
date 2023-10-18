@@ -1,0 +1,22 @@
+{
+    "name": "tanja/www",
+    "autoload": {
+        "psr-4": {
+            "Tanja\\Www\\": "./"
+        },
+        "classmap": [
+            "controller",
+            "model"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Tatiana Belchik",
+            "email": "ttnblchk@gmail.com"
+        }
+    ],
+    "require": {
+        "fakerphp/faker": "^1.23",
+        "ext-pdo": "*"
+    }
+}

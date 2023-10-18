@@ -1,0 +1,52 @@
+networks:
+  participant-project:
+    name: participant-project
+
+services:
+  nginx1:
+    container_name: nginx1
+    image: nginx
+    ports:
+    - 80:80
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./www:/var/www/public_html
+    networks:
+      - participant-project
+    depends_on:
+      - php1
+      - mysql1
+
+  php1:
+    container_name: php1
+    build: config/php
+    volumes:
+      - ./www:/var/www/public_html
+    networks:
+      - participant-project
+    depends_on:
+      - mysql1
+
+  mysql1:
+    container_name: mysql1
+    image: mysql
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db
+    networks:
+      - participant-project
+
+  
+  phpmyadmin1:
+    container_name: phpmyadmin1
+    image: phpmyadmin
+    ports:
+      - 1500:80
+    environment:
+      - PMA_HOST=mysql1
+    networks:
+      - participant-project
+    depends_on:
+      - mysql1
