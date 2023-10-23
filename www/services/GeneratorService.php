@@ -2,15 +2,12 @@
 
 namespace App\services;
 
+use App\Config;
 use App\model\Participant;
 use Faker\Factory;
 
 class GeneratorService
 {
-    const NOVICE = 'novice';
-    const MAX_SHARES_AMOUNT = 500;
-    const START_DATE_OF_PRESIDENT = 1273449600;
-
     public static function generateEntity(): Participant
     {
         $faker = Factory::create('en_US');
@@ -22,15 +19,15 @@ class GeneratorService
         }
 
         $email = strtolower($firstname . '_' . $lastname). '@' .$faker->safeEmailDomain;
-        return new Participant($firstname, $lastname, $email, self::NOVICE,
-            $faker->numberBetween(1, self::MAX_SHARES_AMOUNT),
-            $faker->numberBetween(self::START_DATE_OF_PRESIDENT, strtotime("-1 day")));
+        return new Participant($firstname, $lastname, $email, Config::NOVICE,
+            $faker->numberBetween(1, Config::MAX_SHARES_AMOUNT),
+            $faker->numberBetween(Config::START_DATE_OF_PRESIDENT, strtotime("-1 day")));
     }
 
     public static function generateStartDate(): int
     {
         $faker = Factory::create('en_US');
-        return $faker->numberBetween(self::START_DATE_OF_PRESIDENT, strtotime("-1 day"));
+        return $faker->numberBetween(Config::START_DATE_OF_PRESIDENT, strtotime("-1 day"));
     }
 
     public static function getParticipants(int $start, int $limit, int $step = 1): \Generator

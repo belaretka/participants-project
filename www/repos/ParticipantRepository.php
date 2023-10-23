@@ -2,20 +2,21 @@
 
 namespace App\repos;
 
+use App\Config;
 use App\model\Participant;
 
 class ParticipantRepository
 {
     public $conn;
-    private static $table = 'participants';
 
     public function __construct()
     {
         $this->conn = Database::connect();
     }
 
-    public function insert(Participant $participant) {
-        $sql = 'INSERT INTO '. self::$table . ' ( firstname, lastname, email, position, shares_amount, start_date, parent_id) 
+    public function insert(Participant $participant): void
+    {
+        $sql = 'INSERT INTO '. Config::TABLE . ' ( firstname, lastname, email, position, shares_amount, start_date, parent_id) 
         VALUES (:firstname, :lastname, :email, :position, :shares_amount, :start_date, :parent_id)';
 
         $stmt = $this->conn->prepare($sql);
@@ -33,7 +34,7 @@ class ParticipantRepository
     {
         $position = 'vice president';
         $id = $this->getCandidateForVicePresident();
-        $sql = 'UPDATE ' . self::$table  . ' SET position = :position WHERE entity_id = :id;';
+        $sql = 'UPDATE ' . Config::TABLE  . ' SET position = :position WHERE entity_id = :id;';
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":position", $position);
         $stmt->bindParam(":id", $id);
@@ -42,15 +43,15 @@ class ParticipantRepository
 
     public function getCandidateForVicePresident() {
         $sql = 'SELECT entity_id FROM '
-            . self::$table . ' WHERE parent_id = 1 AND shares_amount = (SELECT MAX(shares_amount) FROM '
-            . self::$table  . ' WHERE parent_id = 1);';
+            . Config::TABLE . ' WHERE parent_id = 1 AND shares_amount = (SELECT MAX(shares_amount) FROM '
+            . Config::TABLE  . ' WHERE parent_id = 1);';
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetch(\PDO::FETCH_ASSOC)["entity_id"];
     }
 
     public function selectAll() {
-        $sql = 'SELECT * FROM ' . self::$table ;
+        $sql = 'SELECT * FROM ' . Config::TABLE ;
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -59,14 +60,14 @@ class ParticipantRepository
     }
 
     public function deleteAllBesidesOne() {
-        $sql = 'DELETE FROM ' . self::$table  . ' WHERE entity_id > 1; ALTER TABLE '. self::$table  .' AUTO_INCREMENT = 2;';
+        $sql = 'DELETE FROM ' . Config::TABLE  . ' WHERE entity_id > 1; ALTER TABLE '. Config::TABLE  .' AUTO_INCREMENT = 2;';
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
     }
 
     public function selectSumOfSharesAmount(int $entityId)
     {
-        $sql = 'SELECT SUM(shares_amount) FROM ' . self::$table . ' WHERE parent_id = :id';
+        $sql = 'SELECT SUM(shares_amount) FROM ' . Config::TABLE . ' WHERE parent_id = :id';
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":id", $entityId);
         $stmt->execute();
@@ -77,8 +78,8 @@ class ParticipantRepository
     {
         $sql = 'SELECT entity_id AS parent, 
                        start_date, 
-                       (SELECT COUNT(entity_id) FROM ' . self::$table . ' WHERE parent_id = parent) AS affiliates_num
-                FROM ' . self::$table . ' 
+                       (SELECT COUNT(entity_id) FROM ' . Config::TABLE . ' WHERE parent_id = parent) AS affiliates_num
+                FROM ' . Config::TABLE . ' 
                 WHERE start_date < :date
                 ORDER BY affiliates_num, parent DESC, start_date';
 
@@ -102,7 +103,7 @@ class ParticipantRepository
     }
 
     public function selectAllWhereParentIdIs(int $id) {
-        $sql = 'SELECT entity_id FROM ' . self::$table . ' WHERE parent_id = :id';
+        $sql = 'SELECT entity_id FROM ' . Config::TABLE . ' WHERE parent_id = :id';
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":id", $id);
@@ -114,7 +115,7 @@ class ParticipantRepository
     public function updatePosition(int $id)
     {
         $position = 'manager';
-        $sql = 'UPDATE ' . self::$table  . ' SET position = :position WHERE entity_id = :id;';
+        $sql = 'UPDATE ' . Config::TABLE  . ' SET position = :position WHERE entity_id = :id;';
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":position", $position);
         $stmt->bindParam(":id", $id);
@@ -126,8 +127,8 @@ class ParticipantRepository
         $sql = 'SELECT entity_id AS parent,
                         start_date,
                         shares_amount,
-                    (SELECT COUNT(entity_id) FROM ' . self::$table . ' WHERE parent_id = parent) AS affiliates 
-                FROM ' . self::$table . ' 
+                    (SELECT COUNT(entity_id) FROM ' . Config::TABLE . ' WHERE parent_id = parent) AS affiliates 
+                FROM ' . Config::TABLE . ' 
                 WHERE position = :position 
                 ORDER BY affiliates DESC;';
 
