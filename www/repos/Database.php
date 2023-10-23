@@ -9,7 +9,7 @@ class Database
     private static $db_driver = 'mysql';
     private static $user = 'root';
     private static $pass = 'root';
-    private static $host = 'mysql1';
+    private static $host = '192.168.144.2';
     private static $db = 'project_db';
     private static $charset = 'utf8';
 

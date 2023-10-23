@@ -6,7 +6,9 @@
         },
         "classmap": [
             "controller",
-            "model"
+            "model",
+            "services",
+            "repos"
         ]
     },
     "authors": [

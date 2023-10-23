@@ -1,4 +1,4 @@
-<?php include( 'view/header.php' ); ?>
+<?php include( 'view/template/header.php' ); ?>
 
 <section class="card mt-3 mb-3">
     <header class="card-header">
@@ -23,14 +23,14 @@
             <tbody>
             <?php foreach ( $participants as $participant ) : ?>
                 <tr>
-                    <td><?= $participant->entity_id; ?></td>
-                    <td><?= $participant->firstname; ?></td>
-                    <td><?= $participant->lastname; ?></td>
-                    <td><?= $participant->email; ?></td>
-                    <td><?= $participant->position; ?></td>
-                    <td><?= $participant->shares_amount; ?></td>
-                    <td><?= $participant->start_date; ?></td>
-                    <td><?= $participant->parent_id; ?></td>
+                    <td><?= $participant->getEntityId(); ?></td>
+                    <td><?= $participant->getFirstname(); ?></td>
+                    <td><?= $participant->getLastname(); ?></td>
+                    <td><?= $participant->getEmail(); ?></td>
+                    <td><?= $participant->getPosition(); ?></td>
+                    <td><?= $participant->getSharesAmount(); ?></td>
+                    <td><?= $participant->getStartDate(); ?></td>
+                    <td><?= $participant->getParentId(); ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -38,4 +38,4 @@
     </div>
 </section>
 
-<?php include( 'view/footer.php' ); ?>
+<?php include( 'view/template/footer.php' ); ?>
