@@ -8,7 +8,8 @@
             "controller",
             "model",
             "services",
-            "repos"
+            "repos",
+            "Config.php"
         ]
     },
     "authors": [
