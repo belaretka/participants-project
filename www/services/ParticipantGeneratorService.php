@@ -6,7 +6,7 @@ use App\Config;
 use App\model\Participant;
 use Faker\Factory;
 
-class GeneratorService
+class ParticipantGeneratorService implements IGeneratorService
 {
     public static function generateEntity(): Participant
     {
@@ -19,22 +19,21 @@ class GeneratorService
         }
 
         $email = strtolower($firstname . '_' . $lastname). '@' .$faker->safeEmailDomain;
-        return new Participant($firstname, $lastname, $email, Config::NOVICE,
-            $faker->numberBetween(1, Config::MAX_SHARES_AMOUNT),
-            $faker->numberBetween(Config::START_DATE_OF_PRESIDENT, strtotime("-1 day")));
+        return new Participant($firstname, $lastname, $email, Config::$POSITIONS[0],
+            $faker->numberBetween(1, Config::$MAX_SHARES_AMOUNT),
+            $faker->numberBetween(Config::$START_DATE_OF_PRESIDENT, strtotime("-1 day")));
     }
 
     public static function generateStartDate(): int
     {
         $faker = Factory::create('en_US');
-        return $faker->numberBetween(Config::START_DATE_OF_PRESIDENT, strtotime("-1 day"));
+        return $faker->numberBetween(Config::$START_DATE_OF_PRESIDENT, strtotime("-1 day"));
     }
 
-    public static function getParticipants(int $start, int $limit, int $step = 1): \Generator
+    public static function getEntities(int $start, int $limit, int $step = 1): \Generator
     {
         for ($i = $start; $i < $limit; $i+=$step) {
             yield $i => self::generateEntity();
         }
     }
-
 }

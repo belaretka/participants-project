@@ -1,0 +1,12 @@
+{
+  "DB_DRIVER": "mysql",
+  "USER": "root",
+  "PASSWORD": "root",
+  "HOST": "mysql1",
+  "DB_NAME": "project_db",
+  "CHARSET": "utf8",
+  "TABLE": "participants",
+  "POSITIONS" : ["novice", "manager", "vice president", "president"],
+  "MAX_SHARES_AMOUNT": 500,
+  "START_DATE_OF_PRESIDENT": 1273449600
+}

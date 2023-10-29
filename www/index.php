@@ -1,9 +1,9 @@
 <?php
 
-    use App\controller\Controller;
+    use App\controller\ParticipantController;
 
     require_once __DIR__.'/vendor/autoload.php';
 
-    $controller = new Controller();
+    $controller = new ParticipantController();
     $controller->handleRequest();
 
