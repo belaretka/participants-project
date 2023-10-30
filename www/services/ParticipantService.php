@@ -27,6 +27,11 @@ class ParticipantService
 
     public function getList(): array
     {
+        if($this->repo->selectCount() === 0) {
+            $president = new Participant();
+            $president->setParticipant((array)JsonParser::read("president.json"));
+            $this->repo->insert($president);
+        }
         return $this->repo->selectAll();
     }
 

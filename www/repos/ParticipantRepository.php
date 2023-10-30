@@ -21,7 +21,7 @@ class ParticipantRepository
         VALUES ( :firstname, :lastname, :email, :position, :shares_amount, :start_date, :parent_id)';
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':frstname', $participant->getFirstname());
+        $stmt->bindValue(':firstname', $participant->getFirstname());
         $stmt->bindValue(':lastname', $participant->getLastname());
         $stmt->bindValue(':email', $participant->getEmail());
         $stmt->bindValue(':position', $participant->getPosition());
@@ -138,5 +138,13 @@ class ParticipantRepository
             $candidates[] = $obj;
         }
         return $candidates;
+    }
+
+    public function selectCount()
+    {
+        $sql = 'SELECT COUNT(*) AS amount FROM ' . Config::$TABLE;
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC)["amount"];
     }
 }

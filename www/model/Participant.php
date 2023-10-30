@@ -25,6 +25,17 @@ class Participant
         $this->parent_id = $_parent_id;
     }
 
+    public function setParticipant(array $participant) {
+        $this->entity_id = $participant["entity_id"];
+        $this->firstname = $participant["firstname"];
+        $this->lastname = $participant["lastname"];
+        $this->email = $participant["email"];
+        $this->position = $participant["position"];
+        $this->shares_amount = $participant["shares_amount"];
+        $this->start_date = $participant["start_date"];
+        $this->parent_id = $participant["parent_id"];
+    }
+
     public function getEntityId()
     {
         return $this->entity_id;

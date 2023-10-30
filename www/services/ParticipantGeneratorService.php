@@ -14,12 +14,13 @@ class ParticipantGeneratorService implements IGeneratorService
 
         $firstname = $faker->firstName;
         $lastname = $faker->lastName;
-        if(str_starts_with($lastname, '*\'') ) {
-            $lastname = str_replace('*\'', '', $lastname);
-        }
-
         $email = strtolower($firstname . '_' . $lastname). '@' .$faker->safeEmailDomain;
-        return new Participant($firstname, $lastname, $email, Config::$POSITIONS[0],
+
+        return new Participant(null,
+            $firstname,
+            $lastname,
+            $email,
+            Config::$POSITIONS[0],
             $faker->numberBetween(1, Config::$MAX_SHARES_AMOUNT),
             $faker->numberBetween(Config::$START_DATE_OF_PRESIDENT, strtotime("-1 day")));
     }
