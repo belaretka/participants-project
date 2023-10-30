@@ -4,7 +4,7 @@ namespace App\controller;
 
 use App\services\ParticipantService;
 
-class ParticipantController
+class ParticipantController extends BaseController
 {
     public ParticipantService $service;
 
@@ -14,7 +14,7 @@ class ParticipantController
 
     public function handleRequest(): void
     {
-        $operation = isset( $_GET['action'] ) ? $_GET['action'] : null;
+        $operation = $_GET['action'] ?? null;
 
         switch ($operation){
             case null:
@@ -29,7 +29,7 @@ class ParticipantController
         }
     }
 
-    private function fulfillList(): void
+    protected function fulfillList(): void
     {
         try {
             $this->service->fulfillListWithEntities();
@@ -53,13 +53,4 @@ class ParticipantController
         include('view/participants.php');
     }
 
-    private function redirect($location): void
-    {
-        header('Location: ' . $location);
-    }
-
-    protected function showError($title, $message): void
-    {
-        include ('view/error.php');
-    }
 }
