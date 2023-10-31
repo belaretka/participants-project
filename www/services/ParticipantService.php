@@ -2,7 +2,7 @@
 
 namespace App\services;
 
-use App\Config;
+use App\config\Config;
 use App\model\Participant;
 use App\repos\ParticipantRepository;
 
@@ -25,14 +25,14 @@ class ParticipantService
         $this->repo->setVicePresident();
     }
 
-    public function getList(): array
+    public function getList(string $filter = null): array
     {
         if($this->repo->selectCount() === 0) {
             $president = new Participant();
             $president->setParticipant((array)JsonParser::read("president.json"));
             $this->repo->insert($president);
         }
-        return $this->repo->selectAll();
+        return $this->repo->selectAll($filter);
     }
 
     public function clearList(): void

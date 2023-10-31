@@ -24,6 +24,10 @@ class ParticipantController extends BaseController
                 $this->fulfillList(); break;
             case 'delete':
                 $this->deleteList(); break;
+            case 'get':
+                $this->getParticipants();break;
+            case 'chart':
+                $this->showChart(); break;
             default:
                 $this->showError("Wrong operation", "Page for operation '$operation' not found"); break;
         }
@@ -51,6 +55,19 @@ class ParticipantController extends BaseController
         $participants = $this->service->getList();
 
         include('view/participants.php');
+    }
+
+    protected function getParticipants()
+    {
+        $participants = $this->service->getList('position');
+        $result = json_encode($participants);
+        echo $result;
+    }
+
+    protected function showChart()
+    {
+        $title = 'Chart';
+        include ('view/chart.php');
     }
 
 }
