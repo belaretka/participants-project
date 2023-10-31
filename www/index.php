@@ -1,9 +1,11 @@
 <?php
 
-    use App\controller\BaseController;
+use App\config\Config;
+use App\controller\BaseController;
 
-    require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
-    $controller = new BaseController();
-    $controller->handleRequest();
+Config::load();
+$controller = new BaseController();
+$controller->handleRequest();
 

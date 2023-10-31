@@ -9,7 +9,7 @@
             "model",
             "services",
             "repos",
-            "Config.php"
+            "config"
         ]
     },
     "authors": [

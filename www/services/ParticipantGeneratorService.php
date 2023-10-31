@@ -2,13 +2,13 @@
 
 namespace App\services;
 
-use App\Config;
+use App\config\Config;
 use App\model\Participant;
 use Faker\Factory;
 
 class ParticipantGeneratorService implements IGeneratorService
 {
-    public static function generateEntity(): Participant
+    public static function generateEntity(int $id): Participant
     {
         $faker = Factory::create('en_US');
 
@@ -16,7 +16,7 @@ class ParticipantGeneratorService implements IGeneratorService
         $lastname = $faker->lastName;
         $email = strtolower($firstname . '_' . $lastname). '@' .$faker->safeEmailDomain;
 
-        return new Participant(null,
+        return new Participant($id,
             $firstname,
             $lastname,
             $email,
@@ -34,7 +34,7 @@ class ParticipantGeneratorService implements IGeneratorService
     public static function getEntities(int $start, int $limit, int $step = 1): \Generator
     {
         for ($i = $start; $i < $limit; $i+=$step) {
-            yield $i => self::generateEntity();
+            yield $i => self::generateEntity($i);
         }
     }
 }

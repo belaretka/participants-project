@@ -2,7 +2,7 @@
 
 namespace App\repos;
 
-use App\Config;
+use App\config\Config;
 use App\model\Participant;
 
 class ParticipantRepository
@@ -11,7 +11,6 @@ class ParticipantRepository
 
     public function __construct()
     {
-        Config::load();
         $this->conn = Database::connect();
     }
 
@@ -46,13 +45,25 @@ class ParticipantRepository
         return $stmt->fetch(\PDO::FETCH_ASSOC)["entity_id"];
     }
 
-    public function selectAll() {
-        $sql = 'SELECT * FROM ' . Config::$TABLE ;
+    public function selectAll(string $filter = null) {
+        $sql = $filter === 'position' ?
+            'SELECT entity_id, firstname, lastname, email, position, shares_amount, start_date, parent_id, 
+                        (SELECT firstname FROM ' . Config::$TABLE . ' AS tble WHERE tble.entity_id = t.parent_id) AS parent_firstname 
+                        FROM ' . Config::$TABLE . ' AS t 
+                        ORDER BY CASE WHEN position = :president THEN 1 WHEN position = :vp THEN 2 WHEN position = :manager THEN 3 ELSE 4 END, entity_id'
+            : 'SELECT entity_id, firstname, lastname, email, position, shares_amount, start_date, parent_id FROM ' . Config::$TABLE;
 
         $stmt = $this->conn->prepare($sql);
+
+        if($filter === 'position') {
+            $stmt->bindValue(':president', 'president');
+            $stmt->bindValue(':vp', 'vice president');
+            $stmt->bindValue(':manager', 'manager');
+        }
+
         $stmt->execute();
 
-        return $stmt->fetchAll(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, 'App\model\Participant');
+        return $stmt->fetchAll(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, 'App\model\DTO\ParticipantDTO');
     }
 
     public function deleteAllBesidesOne() {

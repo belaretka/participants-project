@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\config;
 
 use App\services\JsonParser;
 
@@ -17,7 +17,7 @@ class Config
 //    const MAX_SHARES_AMOUNT = 500;
 //    const START_DATE_OF_PRESIDENT = 1273449600;
 
-    static string $filename = "data.json";
+    const filename = "data.json";
 
     public static $DB_DRIVER;
     public static $USER;
@@ -32,7 +32,7 @@ class Config
 
     public static function load(): void
     {
-        foreach (JsonParser::read(self::$filename) as $key => $prop) {
+        foreach (JsonParser::read(self::filename) as $key => $prop) {
             self::$$key=$prop;
         }
     }

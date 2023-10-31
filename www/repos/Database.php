@@ -2,7 +2,7 @@
 
 namespace App\repos;
 
-use App\Config;
+use App\config\Config;
 
 class Database
 {
