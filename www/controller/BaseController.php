@@ -21,11 +21,6 @@ class BaseController implements IController
         return $uri;
     }
 
-    public function getQueryStringParams()
-    {
-        return parse_str($_SERVER['QUERY_STRING'], $query);
-    }
-
     protected function redirect($location): void
     {
         header('Location: ' . $location);

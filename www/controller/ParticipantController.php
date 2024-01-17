@@ -2,7 +2,7 @@
 
 namespace App\controller;
 
-use App\services\ParticipantService;
+use App\services\participant\ParticipantService;
 
 class ParticipantController extends BaseController
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\services;
+namespace App\services\generator;
 
 interface IGeneratorService
 {

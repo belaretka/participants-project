@@ -1,10 +1,12 @@
 <?php
 
-namespace App\services;
+namespace App\services\participant;
 
 use App\config\Config;
 use App\model\Participant;
 use App\repos\ParticipantRepository;
+use App\services\generator\ParticipantGeneratorService;
+use App\services\JsonParser;
 
 class ParticipantService
 {
@@ -16,8 +18,8 @@ class ParticipantService
 
     public function fulfillListWithEntities(): void
     {
-        foreach (ParticipantGeneratorService::getEntities(1, 100) as $i => $participant) {
-            $participant->setEntityId($i);
+        foreach (ParticipantGeneratorService::getEntities(1, 100) as $index => $participant) {
+            $participant->setEntityId($index);
             $this->setParentEntityFor($participant);
             $this->repo->insert($participant);
         }
@@ -29,7 +31,7 @@ class ParticipantService
     {
         if($this->repo->selectCount() === 0) {
             $president = new Participant();
-            $president->setParticipant((array)JsonParser::read("president.json"));
+            $president->setParticipant((array)JsonParser::readJson("president.json"));
             $this->repo->insert($president);
         }
         return $this->repo->selectAll($filter);

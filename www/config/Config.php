@@ -32,7 +32,7 @@ class Config
 
     public static function load(): void
     {
-        foreach (JsonParser::read(self::filename) as $key => $prop) {
+        foreach (JsonParser::readJson(self::filename) as $key => $prop) {
             self::$$key=$prop;
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\services;
+namespace App\services\generator;
 
 use App\config\Config;
 use App\model\Participant;
